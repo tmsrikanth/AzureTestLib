@@ -1,6 +1,6 @@
 # Configuration file to hold all the variables
 
-subscription_id = "your-subscription-id"
+subscription_id = "0436caad-8b17-4e28-be94-91326fb12a68"
 tenant_id = "your-tenant-id"
 client_id = "your-client-id"
 client_secret = "your-client-secret"

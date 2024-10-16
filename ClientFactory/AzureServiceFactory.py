@@ -37,6 +37,13 @@ if __name__ == "__main__":
     # Get Resource Management Client
     resource_client_default = factory_default.get_client("resource")
     print(f"Resource Management Client (Default): {resource_client_default}")
+    # Define the resource group parameters
+    resource_group_name = "myResourceGroup"
+    location = "eastus"  # Default region
+
+    # Create the resource group
+    resource_group_params = {"location": location}
+    resource_group = resource_client_default .resource_groups.create_or_update(resource_group_name, resource_group_params)
 
     # Get Secret Client with vault_url
     secret_client_default = factory_default.get_client("key_vault", vault_url="https://your-key-vault-name.vault.azure.net/")

@@ -5,7 +5,23 @@ from azure.storage.blob import BlobServiceClient
 from config import subscription_id, tenant_id, client_id, client_secret
 
 class AzureServiceFactory:
+    """
+    A factory class to create Azure service clients.
+
+    Attributes:
+        credential (DefaultAzureCredential or ClientSecretCredential): The credential for Azure authentication.
+    """
+
     def __init__(self, auth_method="default"):
+        """
+        Initializes the AzureServiceFactory with the specified authentication method.
+
+        Args:
+            auth_method (str, optional): The authentication method ("default" or "service_principal"). Defaults to "default".
+
+        Raises:
+            ValueError: If an unknown authentication method is provided.
+        """
         if auth_method == "default":
             self.credential = DefaultAzureCredential()
         elif auth_method == "service_principal":
@@ -14,6 +30,19 @@ class AzureServiceFactory:
             raise ValueError(f"Unknown authentication method: {auth_method}")
 
     def get_client(self, service_type, **kwargs):
+        """
+        Returns a client for the specified Azure service.
+
+        Args:
+            service_type (str): The type of Azure service ("resource", "key_vault", or "blob_storage").
+            **kwargs: Additional arguments required for the service client.
+
+        Returns:
+            object: The Azure service client.
+
+        Raises:
+            ValueError: If an unknown service type is provided or required arguments are missing.
+        """
         if service_type == "resource":
             return ResourceManagementClient(self.credential, subscription_id)
         elif service_type == "key_vault":
@@ -28,27 +57,3 @@ class AzureServiceFactory:
             return BlobServiceClient(account_url=account_url, credential=self.credential)
         else:
             raise ValueError(f"Unknown service type: {service_type}")
-
-# Example usage
-if __name__ == "__main__":
-    # Using DefaultAzureCredential
-    factory_default = AzureServiceFactory(auth_method="default")
-
-    # Get Resource Management Client
-    resource_client_default = factory_default.get_client("resource")
-    print(f"Resource Management Client (Default): {resource_client_default}")
-    # Define the resource group parameters
-    resource_group_name = "myResourceGroup"
-    location = "eastus"  # Default region
-
-    # Create the resource group
-    resource_group_params = {"location": location}
-    resource_group = resource_client_default .resource_groups.create_or_update(resource_group_name, resource_group_params)
-
-    # Get Secret Client with vault_url
-    secret_client_default = factory_default.get_client("key_vault", vault_url="https://your-key-vault-name.vault.azure.net/")
-    print(f"Secret Client (Default): {secret_client_default}")
-
-    # Get Blob Service Client with account_url
-    blob_service_client_default = factory_default.get_client("blob_storage", account_url="https://your-storage-account-name.blob.core.windows.net")
-    print(f"Blob Service Client (Default): {blob_service_client_default}")

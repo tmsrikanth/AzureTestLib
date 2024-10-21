@@ -1,0 +1,10 @@
+azure-common
+azure-mgmt-resource
+azure-mgmt-compute
+azure-mgmt-network
+azure-mgmt-storage
+azure-storage-blob
+azure-storage-queue
+azure-storage-file-datalake
+azure-identity
+azure-keyvault-secrets

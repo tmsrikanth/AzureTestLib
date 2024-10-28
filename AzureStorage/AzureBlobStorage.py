@@ -14,7 +14,7 @@ class AzureBlobStorage:
         container_client (ContainerClient): The client for the container in Azure Blob Storage.
     """
 
-    def __init__(self, storage_account_name, container_name):
+    def __init__(self, storage_account_name, container_name,credential =None):
         """
         Initializes the AzureBlobStorage with the storage account and container names.
 
@@ -24,7 +24,7 @@ class AzureBlobStorage:
         """
         self.storage_account_name = storage_account_name
         self.container_name = container_name
-        self.credential = DefaultAzureCredential()
+        self.credential = credential or DefaultAzureCredential()
         self.blob_service_client = BlobServiceClient(
             account_url=f"https://{storage_account_name}.blob.core.windows.net",
             credential=self.credential

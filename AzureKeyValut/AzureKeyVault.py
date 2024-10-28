@@ -12,7 +12,7 @@ class AzureKeyVault:
         client (SecretClient): The client for Azure Key Vault.
     """
 
-    def __init__(self, key_vault_name):
+    def __init__(self, key_vault_name, credential=None):
         """
         Initializes the AzureKeyVault with the key vault name.
 
@@ -20,7 +20,7 @@ class AzureKeyVault:
             key_vault_name (str): The name of the Azure Key Vault.
         """
         self.key_vault_name = key_vault_name
-        self.credential = DefaultAzureCredential()
+        self.credential = credential or DefaultAzureCredential()
         self.client = SecretClient(vault_url=f"https://{key_vault_name}.vault.azure.net/", credential=self.credential)
 
     def get_secret(self, secret_name):
